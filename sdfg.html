@@ -1,0 +1,131 @@
+import { useState } from "react";
+import { Shield, Bell, Settings, Menu, X, Search, User } from "lucide-react";
+import StatsGrid from "../components/StatsGrid";
+import RiskScoreGauge from "../components/RiskScoreGauge";
+import TransactionList, { type Transaction } from "../components/TransactionList";
+import PaymentFlow from "../components/PaymentFlow";
+import FraudAlert from "../components/FraudAlert";
+import SecurityTips from "../components/SecurityTips";
+import ActivityChart from "../components/ActivityChart";
+
+const mockTransactions: Transaction[] = [
+  { id: "1", recipient: "Netflix", amount: "$15.99", date: "Today, 2:30 PM", type: "outgoing", riskLevel: "safe", description: "Monthly subscription" },
+  { id: "2", recipient: "Unknown Caller", amount: "$2,500.00", date: "Today, 11:45 AM", type: "outgoing", riskLevel: "danger", description: "Wire transfer — flagged by AI" },
+  { id: "3", recipient: "Salary Deposit", amount: "$4,200.00", date: "Yesterday", type: "incoming", riskLevel: "safe", description: "Monthly salary — Acme Corp" },
+  { id: "4", recipient: "Amazon", amount: "$89.50", date: "Yesterday", type: "outgoing", riskLevel: "safe", description: "Online purchase — Electronics" },
+  { id: "5", recipient: "CryptoExchange", amount: "$1,000.00", date: "Feb 15", type: "outgoing", riskLevel: "caution", description: "First-time recipient — crypto platform" },
+  { id: "6", recipient: "Rent Payment", amount: "$1,800.00", date: "Feb 14", type: "outgoing", riskLevel: "safe", description: "Monthly rent — Apt 4B" },
+  { id: "7", recipient: "Freelance Work", amount: "$750.00", date: "Feb 13", type: "incoming", riskLevel: "safe", description: "Invoice payment — Design project" },
+  { id: "8", recipient: "Tech Support Scam", amount: "$350.00", date: "Feb 12", type: "outgoing", riskLevel: "danger", description: "Blocked — known scam number" },
+];
+
+const Index = () => {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  return (
+    <div className="min-h-screen bg-background">
+      {/* Header */}
+      <header className="border-b border-border bg-card sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center shadow-lg">
+              <Shield size={20} className="text-primary-foreground" />
+            </div>
+            <div>
+              <h1 className="text-lg font-bold text-foreground tracking-tight">PayGuard</h1>
+              <p className="text-[10px] text-muted-foreground font-medium uppercase tracking-wider">Fraud-Aware Protection</p>
+            </div>
+          </div>
+
+          {/* Desktop Nav */}
+          <nav className="hidden md:flex items-center gap-1">
+            {["Dashboard", "Transactions", "Security", "Reports"].map((item, i) => (
+              <button
+                key={item}
+                className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+                  i === 0 ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-secondary"
+                }`}
+              >
+                {item}
+              </button>
+            ))}
+          </nav>
+
+          <div className="flex items-center gap-2">
+            <button className="relative w-9 h-9 rounded-full bg-secondary flex items-center justify-center hover:bg-accent transition-colors">
+              <Bell size={16} className="text-foreground" />
+              <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-risk-danger text-risk-danger-foreground text-[10px] font-bold rounded-full flex items-center justify-center animate-pulse-risk">
+                3
+              </span>
+            </button>
+            <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center">
+              <User size={16} className="text-primary" />
+            </div>
+            <button
+              className="md:hidden w-9 h-9 rounded-full bg-secondary flex items-center justify-center"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            >
+              {mobileMenuOpen ? <X size={16} /> : <Menu size={16} />}
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile Menu */}
+        {mobileMenuOpen && (
+          <div className="md:hidden border-t border-border p-4 animate-fade-in">
+            {["Dashboard", "Transactions", "Security", "Reports"].map((item, i) => (
+              <button
+                key={item}
+                className={`w-full text-left px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                  i === 0 ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground hover:bg-secondary"
+                }`}
+              >
+                {item}
+              </button>
+            ))}
+          </div>
+        )}
+      </header>
+
+      {/* Main Content */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+        {/* Welcome */}
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="text-2xl font-bold text-foreground">Welcome back, Alex</h2>
+            <p className="text-sm text-muted-foreground mt-0.5">Your account is protected. Here's your overview.</p>
+          </div>
+          <div className="hidden sm:flex items-center gap-2 text-xs text-muted-foreground bg-secondary px-3 py-1.5 rounded-full">
+            <span className="w-2 h-2 rounded-full bg-risk-safe animate-pulse" />
+            All systems operational
+          </div>
+        </div>
+
+        {/* Active Alert */}
+        <FraudAlert
+          level="danger"
+          title="Suspicious Activity Detected"
+          message="A payment of $2,500 to an unrecognized recipient was flagged by our AI. Please review immediately."
+          tips={[
+            "This recipient is not in your contacts",
+            "The amount exceeds your usual spending pattern by 340%",
+            "The transaction was initiated from an unrecognized IP address",
+          ]}
+        />
+
+        {/* Stats */}
+        <StatsGrid />
+
+        {/* Three Column Layout */}
+        <div className="grid lg:grid-cols-12 gap-6">
+          {/* Left - Payment + Risk */}
+          <div className="lg:col-span-4 space-y-6">
+            <PaymentFlow />
+            <div className="bg-card border border-border rounded-xl p-6 flex flex-col items-center">
+              <h3 className="text-sm font-semibold text-foreground mb-4 self-start">Account Risk Score</h3>
+              <RiskScoreGauge score={28} />
+              <p className="text-xs text-muted-foreground mt-3 text-center max-w-[200px]">
+                Based on your transaction history, device trust, and security settings
+              </p>
+              <div className="w"
+              
