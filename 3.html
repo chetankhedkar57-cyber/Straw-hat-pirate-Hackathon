@@ -1,0 +1,99 @@
+import { useState } from "react";
+import { Shield, Bell, Menu, X, User } from "lucide-react";
+
+/* ---------------- MOCK DATA ---------------- */
+const mockTransactions = [
+  { id: "1", recipient: "Netflix", amount: "$15.99", risk: "safe" },
+  { id: "2", recipient: "Unknown Caller", amount: "$2,500.00", risk: "danger" },
+  { id: "3", recipient: "Amazon", amount: "$89.50", risk: "safe" },
+];
+
+/* ---------------- COMPONENTS ---------------- */
+
+const FraudAlert = () => (
+  <div className="bg-red-100 border border-red-400 p-4 rounded-xl">
+    <h3 className="font-bold text-red-700">⚠ Suspicious Activity</h3>
+    <p className="text-sm text-red-600">
+      A payment of $2,500 was flagged as risky.
+    </p>
+  </div>
+);
+
+const StatsGrid = () => (
+  <div className="grid grid-cols-3 gap-4">
+    <div className="bg-gray-100 p-4 rounded">💳 12 Transactions</div>
+    <div className="bg-gray-100 p-4 rounded">⚠ 2 Alerts</div>
+    <div className="bg-gray-100 p-4 rounded">🛡 Safe</div>
+  </div>
+);
+
+const TransactionList = () => (
+  <div>
+    {mockTransactions.map((t) => (
+      <div
+        key={t.id}
+        className={`p-3 mb-2 rounded flex justify-between ${
+          t.risk === "danger" ? "bg-red-100" : "bg-gray-100"
+        }`}
+      >
+        <span>{t.recipient}</span>
+        <span>{t.amount}</span>
+      </div>
+    ))}
+  </div>
+);
+
+const RiskScore = () => (
+  <div className="bg-gray-100 p-4 rounded text-center">
+    <h3 className="font-bold">Risk Score</h3>
+    <p className="text-2xl text-green-600">28%</p>
+  </div>
+);
+
+/* ---------------- MAIN APP ---------------- */
+
+export default function App() {
+  const [menu, setMenu] = useState(false);
+
+  return (
+    <div className="min-h-screen bg-white">
+      {/* Header */}
+      <header className="border-b p-4 flex justify-between items-center">
+        <div className="flex gap-2 items-center">
+          <Shield />
+          <h1 className="font-bold">PayGuard</h1>
+        </div>
+
+        <div className="flex gap-2 items-center">
+          <Bell />
+          <User />
+          <button onClick={() => setMenu(!menu)}>
+            {menu ? <X /> : <Menu />}
+          </button>
+        </div>
+      </header>
+
+      {/* Mobile Menu */}
+      {menu && (
+        <div className="p-4 border-b">
+          <p>Dashboard</p>
+          <p>Transactions</p>
+          <p>Security</p>
+        </div>
+      )}
+
+      {/* Content */}
+      <main className="p-4 space-y-4">
+        <h2 className="text-xl font-bold">Welcome back</h2>
+
+        <FraudAlert />
+        <StatsGrid />
+
+        <div className="grid md:grid-cols-2 gap-4">
+          <TransactionList />
+          <RiskScore />
+        </div>
+      </main>
+    </div>
+  );
+}
