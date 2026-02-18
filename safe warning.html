@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Risk Detector</title>
+<style>
+    body { font-family: sans-serif; padding: 20px; }
+    .risk-high { background-color: #ffcccc; border: 2px solid red; padding: 10px; }
+    .risk-warn { background-color: #fff3cd; border: 2px solid #ffeeba; padding: 10px; }
+    #messageLog { margin-top: 20px; }
+</style>
+</head>
+<body>
+    <h3>Transaction/Message Scanner</h3>
+<textarea id="userInput" rows="4" cols="50" placeholder="Paste message or URL here..."></textarea>
+<br>
+<button onclick="analyzeRisk()">Analyze Risk</button>
+
+<div id="messageLog"></div>
+
+<script>
+    function analyzeRisk() {
+        const text = document.getElementById('userInput').value;
+        const log = document.getElementById('messageLog');
+        log.innerHTML = ""; // Clear previous
+        // Rulebook Definition
+        const rules = [
+            { pattern: /(PIN|UPI PIN|PASSWORD|OTP)/i, risk: 'High', msg: 'NEVER enter PIN to receive money.' },
+            { pattern: /(unknown|stranger|lottery|winner|bank alert)/i, risk: 'High', msg: 'Sender unknown or urgent demand.' },
+            { pattern: /(click here|bit\.ly|shorturl)/i, risk: 'Warn', msg: 'Suspicious link detected.' }
+        ];
+
+        let highRiskFound = false;
+        let foundMsg = "";
+
+        rules.forEach(rule => {
+            if (rule.pattern.test(text)) {
+                if (rule.risk === 'High') highRiskFound = true;
+                foundMsg += `<p><strong>${rule.risk} Risk:</strong> ${rule.msg}</p>`;
+            }
+        });
+ if (foundMsg) {
+            log.innerHTML = `<div class="${highRiskFound ? 'risk-high' : 'risk-warn'}">${foundMsg}</div>`;
+        } else {
+            log.innerHTML = "<div>No immediate risk detected. Proceed with caution.</div>";
+        }
+    }
+</script>
+
+</body>
+</html>
