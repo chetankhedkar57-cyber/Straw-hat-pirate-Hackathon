@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UPI Fraud Detection Hackathon Project</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+      background-color: #f9f9f9;
+      color: #333;
+    }
+    header {
+      background: #d32f2f;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+    }
+    nav {
+      background: #333;
+      padding: 10px;
+      text-align: center;
+    }
+    nav a {
+      color: #fff;
+      margin: 0 15px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    nav a:hover {
+      text-decoration: underline;
+    }
+    .container {
+      width: 80%;
+      margin: auto;
+      overflow: hidden;
+      padding: 20px;
+    }
+    section {
+      margin-bottom: 40px;
+    }
+    h2 {
+      color: #d32f2f;
+    }
+    footer {
+      background: #333;
+      color: #fff;
+      text-align: center;
+      padding: 15px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Fraud Detection Middleware for UPI Safety</h1>
+    <p>Hackathon Project – Protecting Senior Citizens from Digital Scams</p>
+  </header>
+
+  <nav>
+    <a href="#problem">Problem</a>
+    <a href="#solution">Solution</a>
+    <a href="#demo">Demo</a>
+    <a href="#team">Team</a>
+  </nav>
+
+  <div class="container">
+    <section id="problem">
+      <h2>Problem</h2>
+      <p>Senior citizens and digitally less-aware users are often tricked by fraudulent “Payment Request” links. They believe they are receiving money but are actually authorizing a payment by entering their UPI PIN. The lack of contextual warnings in payment apps increases vulnerability to such scams.</p>
+    </section>
+
+    <section id="solution">
+      <h2>Solution</h2>
+      <p>We developed an Android website interface that monitors payment app screens and notification text in real time. It detects high-risk scenarios (e.g., “Request from unknown sender” + UPI PIN entry screen) using rule-based text analysis and triggers a clear, high-visibility warning  informing the user: <strong>“STOP! You are sending money, not receiving it.”</strong></p>
+    </section>
+
+    <section id="demo">
+      <h2>Demo</h2>
+      <p>Here we showcase how the middleware works:</p>
+      <ul>
+        <li>Detects suspicious payment requests.</li>
+        <li>Shows a red warning overlay.</li>
+        <li>Helps users cancel fraudulent transactions.</li>
+      </ul>
+    </section>
+
+    <section id="team">
+      <h2>Team</h2>
+      <p>Created by <strong>strawhat</strong> team for Hackathon 2026.</p>
+    </section>
+  </div>
+
+  <footer>
+    <p>&copy; 2026 Hackathon Project | UPI Fraud Detection Middleware</p>
+  </footer>
+</body>
+</html>
