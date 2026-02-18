@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>UPI Fraud Detection - Risk Scoring Demo</title>
+  <style>
+    body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; background: #f4f4f4; }
+    .app-screen {
+      margin: auto; padding: 20px; width: 350px;
+      background: #fff; border: 1px solid #ccc; box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .btn {
+      margin-top: 20px; padding: 10px 20px;
+      background: #d32f2f; color: #fff; border: none; cursor: pointer;
+    }
+    .btn:hover { background: #b71c1c; }
+    .alert {
+      display: none; margin-top: 20px;
+      background: red; color: white; padding: 20px; font-size: 18px; font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-screen">
+    <h2>Payment Request</h2>
+    <label>Sender:</label>
+    <input type="text" id="sender" value="unknown"><br><br>
+
+    <label>Action:</label>
+    <input type="text" id="action" value="upi pin"><br><br>
+
+    <label>Amount:</label>
+    <input type="number" id="amount" value="6000"><br><br>
+
+    <label>Message:</label>
+    <input type="text" id="message" value="urgent payment request"><br><br>
+
+    <button class="btn" onclick="checkRisk()">Proceed</button>
+  </div>
+
+  <div class="alert" id="riskAlert">
+    🚨 High Risk Detected! STOP! You are sending money, not receiving it.
+  </div>
+
+  <script>
+    function checkRisk() {
+      let riskScore = 0;
+
+      let sender = document.getElementById("sender").value.toLowerCase();
+      let action = document.getElementById("action").value.toLowerCase();
+      let amount = parseInt(document.getElementById("amount").value);
+      let message = document.getElementById("message").value.toLowerCase();
+
+      // Rule 1: Unknown sender
+      if (sender === "unknown") riskScore += 5;
+
+      // Rule 2: UPI PIN entry
+      if (action.includes("upi pin")) riskScore += 7;
+
+      // Rule 3: Large transaction amount
+      if (amount > 5000) riskScore += 5;
+
+      // Rule 4: Suspicious keywords
+      if (message.includes("lottery") || message.includes("gift") || message.includes("urgent")) {
+        riskScore += 5;
+      }
+
+      // Show alert if risk score is high
+      if (riskScore >= 10) {
+        document.getElementById("riskAlert").style.display = "block";
+      } else {
+        alert("Transaction seems safe. Risk Score: " + riskScore);
+      }
+    }
+  </script>
+</body>
+</html>
